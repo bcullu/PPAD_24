@@ -1,4 +1,9 @@
 
+<img width="853" alt="image" src="https://github.com/bcullu/PPAD_24/assets/82031922/b5c7a9f0-b9a3-43d5-b557-1fbb2d0db25c">
+
+
+
+
 # Chat with Cruise Passengers
 
 This project is a Streamlit web application that allows users to chat with cruise passengers by querying reviews of specific ships. The application uses LangChain, OpenAI, and FAISS for conversational retrieval and embedding.
