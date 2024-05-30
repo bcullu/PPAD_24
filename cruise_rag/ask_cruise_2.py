@@ -5,19 +5,20 @@ import pandas as pd
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from langchain_community.llms import HuggingFaceHub
+#from langchain_community.llms import HuggingFaceHub
 from langchain_community.vectorstores import FAISS
 from langchain_community.chat_models import ChatOpenAI
-from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
+#from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
+from langchain_openai import OpenAIEmbeddings
 #from langchain_openai import ChatOpenAI
 from pyngrok import ngrok 
 import openai
 from dotenv import load_dotenv
 import os
 
-
-
-df = pd.read_pickle("")
+load_dotenv()
+openai_api_key = os.getenv('OPENAI_API_KEY')
+df = pd.read_pickle("ppad_24_rag_data")
 
 def get_data(ship_name):
   filtered_reviews = df[df['ShipName'] == str(ship_name)]
@@ -40,14 +41,14 @@ def initialize_vectorstore(chunks, force_refresh=False):
     # Initialize or refresh the vectorstore in the session state
     if 'vectorstore' not in st.session_state or force_refresh:
         print("Creating new vectorstore...")
-        embeddings = OpenAIEmbeddings(openai_api_key='OPENAI API KEY HERE)
+        embeddings = OpenAIEmbeddings(api_key=openai_api_key)
         vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)
         st.session_state['vectorstore'] = vectorstore
     else:
         print("Using cached vectorstore")
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI(openai_api_key = 'OPENAI API KEY HERE')
+    llm = ChatOpenAI(api_key=openai_api_key)
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
