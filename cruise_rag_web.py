@@ -15,9 +15,28 @@ from pyngrok import ngrok
 import openai
 #from dotenv import load_dotenv
 import os
+from io import BytesIO
+
 
 openai_api_key = st.secrets["OPENAI_API_KEY"]
-df = pd.read_pickle("ppad_24_rag_data")
+
+def download_file_from_github(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        return BytesIO(response.content)
+    else:
+        st.error("Failed to download file from GitHub")
+        return None
+      
+github_url = "https://github.com/username/repository/raw/branch/path/to/ppad_24_rag_data"
+
+# Dosyayı indirin ve pandas ile okuyun
+file_content = download_file_from_github(github_url)
+if file_content:
+    df = pd.read_pickle(file_content)
+    st.write(df)
+else:
+    st.error("Could not load the data.")
 
 def get_data(ship_name):
   filtered_reviews = df[df['ShipName'] == str(ship_name)]
