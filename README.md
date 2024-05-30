@@ -66,7 +66,7 @@ This project is a Streamlit web application that allows users to chat with cruis
   - `FAISS`: For vector store and efficient retrieval.
   - `openai`: For OpenAI API interaction.
   - `dotenv`: For managing environment variables.
-
+  -  We only tried it in `Python 12`
 - **Functions:**
   - `get_data(ship_name)`: Retrieves reviews for the specified ship.
   - `get_text_chunks(raw_text)`: Splits the raw text into manageable chunks.
