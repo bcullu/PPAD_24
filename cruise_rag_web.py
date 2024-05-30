@@ -13,10 +13,9 @@ from langchain_openai import OpenAIEmbeddings
 #from langchain_openai import ChatOpenAI
 from pyngrok import ngrok 
 import openai
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
 
-load_dotenv()
 openai_api_key = st.secrets["OPENAI_API_KEY"]
 df = pd.read_pickle("ppad_24_rag_data")
 
