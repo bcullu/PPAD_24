@@ -1,23 +1,16 @@
-
 import streamlit as st
-from htmlTemplates import css, bot_template, user_template
 import pandas as pd
+import requests
+from io import BytesIO
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-#from langchain_community.llms import HuggingFaceHub
-from langchain_community.vectorstores import FAISS
-from langchain_community.chat_models import ChatOpenAI
-#from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
-from langchain_openai import OpenAIEmbeddings
-#from langchain_openai import ChatOpenAI
-from pyngrok import ngrok 
+from langchain.vectorstores import FAISS
+from langchain.chat_models import ChatOpenAI
+from langchain.embeddings import OpenAIEmbeddings
 import openai
-#from dotenv import load_dotenv
-import os
-from io import BytesIO
 
-
+# Gizli anahtarı almak için Streamlit secrets özelliğini kullanın
 openai_api_key = st.secrets["OPENAI_API_KEY"]
 
 def download_file_from_github(url):
@@ -27,7 +20,8 @@ def download_file_from_github(url):
     else:
         st.error("Failed to download file from GitHub")
         return None
-      
+
+# Github dosya URL'si
 github_url = "https://github.com/username/repository/raw/branch/path/to/ppad_24_rag_data"
 
 # Dosyayı indirin ve pandas ile okuyun
@@ -39,10 +33,9 @@ else:
     st.error("Could not load the data.")
 
 def get_data(ship_name):
-  filtered_reviews = df[df['ShipName'] == str(ship_name)]
-  raw_text = '\n\n'.join(filtered_reviews['r_Review'])
-  return raw_text
-
+    filtered_reviews = df[df['ShipName'] == str(ship_name)]
+    raw_text = '\n\n'.join(filtered_reviews['r_Review'])
+    return raw_text
 
 def get_text_chunks(raw_text):
     text_splitter = CharacterTextSplitter(
@@ -54,9 +47,7 @@ def get_text_chunks(raw_text):
     chunks = text_splitter.split_text(raw_text)
     return chunks
 
-#@st.cache_data() #hash_funcs={FAISS: lambda _: None}
 def initialize_vectorstore(chunks, force_refresh=False):
-    # Initialize or refresh the vectorstore in the session state
     if 'vectorstore' not in st.session_state or force_refresh:
         print("Creating new vectorstore...")
         embeddings = OpenAIEmbeddings(api_key=openai_api_key)
@@ -76,23 +67,20 @@ def get_conversation_chain(vectorstore):
     )
     return conversation_chain
 
-
 def handle_userinput(user_question):
     response = st.session_state.conversation({'question': user_question})
     st.session_state.chat_history = response['chat_history']
 
     for i, message in enumerate(st.session_state.chat_history):
         if i % 2 == 0:
-            st.write(user_template.replace(
-                "{{MSG}}", message.content), unsafe_allow_html=True)
+            st.write(user_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
         else:
-            st.write(bot_template.replace(
-                "{{MSG}}", message.content), unsafe_allow_html=True)
+            st.write(bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
 
 def main():
-    load_dotenv()
     st.set_page_config(page_title="Chat with Cruise Passengers", page_icon=":ship:")
     st.write(css, unsafe_allow_html=True)
+    
     # Ensure basic structure is present in session state
     if 'conversation' not in st.session_state:
         st.session_state['conversation'] = None
