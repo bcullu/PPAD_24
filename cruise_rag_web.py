@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-openai_api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = st.secrets["OPENAI_API_KEY"]
 df = pd.read_pickle("ppad_24_rag_data")
 
 def get_data(ship_name):
