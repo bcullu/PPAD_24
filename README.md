@@ -54,7 +54,7 @@ This project is a Streamlit web application that allows users to chat with cruis
 
 2. **Interact with the app:**
 
-   - Enter the name of a ship (Celestyal Crystal or Celestyal Odyssey) to fetch reviews.
+   - Enter the name of a ship (Celestyal Crystal or Celestyal Olympia) to fetch reviews.
    - Ask your questions to the passengers based on the reviews.
 
 ## Code Explanation
