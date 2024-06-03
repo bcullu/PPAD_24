@@ -1,8 +1,8 @@
 
-<img width="853" alt="image" src="https://github.com/bcullu/PPAD_24/assets/82031922/b5c7a9f0-b9a3-43d5-b557-1fbb2d0db25c">
 
 
 
+<img width="1110" alt="image" src="https://github.com/bcullu/PPAD_24/assets/82031922/e127f111-1f01-4a93-8130-d03fdf61c719">
 
 # Chat with Cruise Passengers
 
