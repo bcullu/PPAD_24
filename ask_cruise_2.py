@@ -71,7 +71,6 @@ def main():
     load_dotenv()
     st.set_page_config(page_title="Chat with Cruise Passengers", page_icon=":ship:")
     st.write(css, unsafe_allow_html=True)
-    # Ensure basic structure is present in session state
     if 'conversation' not in st.session_state:
         st.session_state['conversation'] = None
     if 'chat_history' not in st.session_state:
