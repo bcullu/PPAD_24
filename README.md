@@ -19,8 +19,8 @@ This project is a Streamlit web application that allows users to chat with cruis
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/chat-with-cruise-passengers.git
-   cd chat-with-cruise-passengers
+   git clone https://github.com/bcullu/PPAD_24.git
+   cd PPAD_24
    ```
 
 2. **Create a virtual environment:**
