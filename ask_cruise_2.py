@@ -1,16 +1,12 @@
-
 import streamlit as st
 from htmlTemplates import css, bot_template, user_template
 import pandas as pd
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-#from langchain_community.llms import HuggingFaceHub
 from langchain_community.vectorstores import FAISS
 from langchain_community.chat_models import ChatOpenAI
-#from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
 from langchain_openai import OpenAIEmbeddings
-#from langchain_openai import ChatOpenAI
 from pyngrok import ngrok 
 import openai
 from dotenv import load_dotenv
@@ -81,13 +77,12 @@ def main():
     if 'chat_history' not in st.session_state:
         st.session_state['chat_history'] = None
     if 'vectorstore' not in st.session_state:
-        st.session_state['vectorstore'] = None  # Explicit initialization
+        st.session_state['vectorstore'] = None
 
     st.header("Chat with Cruise Passengers :ship:")
     ship_name = st.text_input("Enter the ship name:")
 
     if ship_name and ship_name.strip() and ship_name in df['ShipName'].unique():
-        # Check if ship name has changed or vectorstore needs initialization
         if 'current_ship' not in st.session_state or st.session_state['current_ship'] != ship_name or st.session_state['vectorstore'] is None:
             raw_text = get_data(ship_name)
             text_chunks = get_text_chunks(raw_text)
@@ -97,13 +92,12 @@ def main():
         user_question = st.text_input("Ask a question to passengers:", key="user_question")
         
         if user_question:
-            # Initialize conversation chain if needed
             if st.session_state['conversation'] is None:
                 st.session_state['conversation'] = get_conversation_chain(st.session_state['vectorstore'])
 
             handle_userinput(user_question)
     else:
-        if ship_name:  # Invalid ship name entered
+        if ship_name:
             st.error("Please enter a valid ship name.")
 
 if __name__ == '__main__':
